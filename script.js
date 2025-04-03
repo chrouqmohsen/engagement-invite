@@ -62,4 +62,53 @@ const x = setInterval(function() {
     }
 }, 1000);
 
+function showForm() {
+    document.getElementById("confirmButton").style.display = "none"; 
+    document.getElementById("guestForm").style.display = "block"; 
+    document.getElementById("overlay").style.display = "block"; 
+}
 
+
+document.getElementById("guestForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+
+    var guestName = document.getElementById("guestName").value; 
+    var guestCount = document.getElementById("guestCount").value; 
+
+    
+    document.getElementById("confirmedName").textContent = guestName;
+    document.getElementById("confirmedCount").textContent = guestCount;
+
+   
+    document.getElementById("guestForm").style.display = "none";
+    document.getElementById("overlay").style.display = "none"; 
+  
+    document.getElementById("confirmationMessage").style.display = "block";
+
+
+    console.log("Guest Name: " + guestName + ", Guest Count: " + guestCount);
+
+        // 📨 Send to Telegram
+        const botToken = "7894767759:AAFyiVxlFvLKvJhCsvqd64QG8fycsjrzmiI";
+        const chatId = "1296028412";
+        const message = `💌 New Guest Confirmed!\n👤 Name: ${guestName}\n👥 People: ${guestCount}`;
+    
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Telegram response:", data);
+        })
+        .catch(error => {
+            console.error("Error sending message to Telegram:", error);
+        });
+    
+});

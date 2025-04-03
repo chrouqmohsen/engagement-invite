@@ -16,8 +16,25 @@
             "A new chapter begins with love, laughter, and a promise forever. "  </p>
             <p class="engagement-date">💍 Engagement Date: 1/5/2025 💍</p>
             <div id="countdown"></div>
-        <button class="invite-button" onclick="registerGuest()">confirm</button>
-        <div id="map" style="height: 400px; width: 100%;"></div>
+            <button class="invite-button" id="confirmButton" onclick="showForm()">Confirm</button>
+
+            <div class="overlay" id="overlay" style="display: none;"></div>
+
+        <form id="guestForm">
+            <label for="guestName">Name:</label>
+            <input type="text" id="guestName" name="guestName" required placeholder="أدخل اسمك"><br><br>
+
+            <label for="guestCount">number of people:</label>
+            <input type="number" id="guestCount" name="guestCount" required min="1" placeholder="عدد الأشخاص"><br><br>
+
+            <button type="submit" class="invite-button">Submit</button>
+        </form>
+
+        <div id="confirmationMessage" style="display:none;">
+            <h3>✨ Your royal invitation is confirmed! See you at the enchanted celebration! 👑🎊</h3>
+            <p>Captain: <span id="confirmedName"></span></p>
+            <p>Team Size: <span id="confirmedCount"></span></p>
+        </div>
         <div class="music-control">
             <audio id="bg-music" autoplay loop>
                 <source src="PmJ2-iide-U.mp3" type="audio/mp4">
@@ -26,7 +43,15 @@
         </div>
     </div>
     <script src="script.js"></script>
-  
+    <script>
+       
+        window.addEventListener('load', function() {
+            var bgMusic = document.getElementById('bg-music');
+            bgMusic.play().catch(function(e) {
+                console.log('music cant play' + e);
+            });
+        });
+    </script> 
 </body>
 </html>
 
