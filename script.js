@@ -1,38 +1,65 @@
-// Countdown Timer
-function updateCountdown() {
-    const eventDate = new Date("May 1, 2025 00:00:00").getTime();
-    const now = new Date().getTime();
-    const timeLeft = eventDate - now;
 
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+document.addEventListener("DOMContentLoaded", function () {
+    let audio = document.getElementById("bg-music");
+    audio.volume = 0.5; 
 
-    document.getElementById("countdown").innerHTML = `💍 ${days}d ${hours}h ${minutes}m ${seconds}s 💍`;
+    
+    document.body.addEventListener("click", function () {
+        audio.play();
+    }, { once: true });
 
-    if (timeLeft < 0) {
-        document.getElementById("countdown").innerHTML = "🎉 The big day is here! 🎉";
+    
+    createStars();
+});
+
+function createStars() {
+    const numberOfStars = 350; 
+    const body = document.body;
+
+    for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.width = Math.random() * 8 + 'px'; 
+        star.style.height = star.style.width; 
+        star.style.top = Math.random() * 100 + '%'; 
+        star.style.left = Math.random() * 100 + '%'; 
+        star.style.animationDuration = Math.random() * 2 + 2 + 's'; 
+        body.appendChild(star);
     }
 }
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// Confirm Attendance Function
-function confirmAttendance() {
-    alert("Thank you for confirming your attendance! We can't wait to celebrate with you! 🎊");
+function registerGuest() {
+    alert("✨ Your royal invitation is confirmed! See you at the enchanted celebration! 👑🎊");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    const audio = document.getElementById("background-music");
+    let audio = document.getElementById("bg-music");
 
-    // محاولة التشغيل تلقائياً بعد تحميل الصفحة
-    audio.volume = 1.0; // تأكدي من أن الصوت ليس مكتوماً
-    audio.play().catch(error => {
-        console.log("Autoplay blocked. Trying again after user interaction.");
-        document.body.addEventListener("click", function() {
-            audio.play();
-        }, { once: true });
-    });
+    function playMusic() {
+        audio.play().catch(error => console.log("Autoplay blocked: ", error));
+        document.removeEventListener("click", playMusic);
+    }
+
+    document.addEventListener("click", playMusic);
 });
+
+const countdownDate = new Date("May 1, 2025 00:00:00").getTime();
+
+const x = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countdown").innerHTML = "The big day has arrived!";
+    }
+}, 1000);
+
+
